@@ -7,6 +7,7 @@ const loadingSpinner = document.getElementById("loading-spinner");
 // OMDb API Key
 const apiKey = "5349e157";
 let currentMovies = [];
+let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 
 // Search Button Event
 searchBtn.addEventListener("click", () => {
@@ -195,6 +196,10 @@ function displayMovieDetails(movie) {
                     ${movie.Plot}
                 </p>
 
+                <button class="favorite-btn" onclick='addToFavorites(${JSON.stringify(movie)})'>
+                     Add to Favorites
+                </button>
+
             </div>
 
         </div>
@@ -207,4 +212,31 @@ function goBack() {
 
     displayMovies(currentMovies);
 
+}
+
+// Add Movie to Favorites
+function addToFavorites(movie) {
+
+    // Check for duplicates
+    const alreadyFavorite = favorites.some(
+        (fav) => fav.imdbID === movie.imdbID
+    );
+
+    if (alreadyFavorite) {
+
+        alert("Movie already in favorites.");
+
+        return;
+    }
+
+    // Add movie
+    favorites.push(movie);
+
+    // Save to localStorage
+    localStorage.setItem(
+        "favorites",
+        JSON.stringify(favorites)
+    );
+
+    alert("Movie added to favorites!");
 }
