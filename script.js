@@ -5,6 +5,7 @@ const movieContainer = document.getElementById("movie-container");
 
 // OMDb API Key
 const apiKey = "5349e157";
+let currentMovies = [];
 
 // Search Button Event
 searchBtn.addEventListener("click", () => {
@@ -51,8 +52,9 @@ async function getMovieData() {
     return;
 }
 
-displayMovies(data.Search);
+currentMovies = data.Search;
 
+displayMovies(currentMovies);
     } catch (error) {
 
         movieContainer.innerHTML = `
@@ -133,6 +135,10 @@ function displayMovieDetails(movie) {
 
         <div class="movie-details">
 
+            <button class="back-btn" onclick="goBack()">
+                ← Back to Results
+            </button>
+
             <img
                 src="${movie.Poster}"
                 alt="${movie.Title}"
@@ -170,4 +176,11 @@ function displayMovieDetails(movie) {
         </div>
 
     `;
+}
+
+// Go Back to Search Results
+function goBack() {
+
+    displayMovies(currentMovies);
+
 }
