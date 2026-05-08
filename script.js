@@ -126,6 +126,7 @@ function displayMovies(movies) {
                     src="${movie.Poster}"
                     alt="${movie.Title}"
                     class="movie-poster"
+                    onerror="this.onerror=null; this.src='https://placehold.co/300x450?text=No+Image';"
                 />
 
                 <div class="movie-info">
@@ -186,6 +187,7 @@ function displayMovieDetails(movie) {
                 src="${movie.Poster}"
                 alt="${movie.Title}"
                 class="details-poster"
+                onerror="this.onerror=null; this.src='https://placehold.co/300x450?text=No+Image';"
             />
 
             <div class="details-info">
