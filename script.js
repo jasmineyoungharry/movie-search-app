@@ -17,6 +17,17 @@ async function getMovieData() {
     // Get movie name from input
     const movieName = movieInput.value.trim();
 
+    if (movieName === "") {
+
+    movieContainer.innerHTML = `
+        <p class="error-message">
+            Please enter a movie name.
+        </p>
+    `;
+
+    return;
+}
+
     // API URL
     const url = `https://www.omdbapi.com/?apikey=${apiKey}&t=${movieName}`;
 
@@ -29,12 +40,28 @@ async function getMovieData() {
         const data = await response.json();
 
         // Display movie on page
-        displayMovie(data);
+        if (data.Response === "False") {
+
+    movieContainer.innerHTML = `
+        <p class="error-message">
+            Movie not found.
+        </p>
+    `;
+
+    return;
+}
+
+displayMovie(data);
 
     } catch (error) {
 
-        console.log("Error fetching movie data");
+        movieContainer.innerHTML = `
+    <p class="error-message">
+        Something went wrong. Please try again.
+    </p>
+`;
 
+console.log(error);
     }
 }
 

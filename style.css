@@ -109,3 +109,15 @@ body {
     line-height: 1.6;
     color: #f3f4f6;
 }
+
+/* Error Message */
+.error-message {
+    text-align: center;
+    background-color: #7f1d1d;
+    color: #fecaca;
+
+    padding: 15px;
+    border-radius: 10px;
+
+    font-size: 1.1rem;
+}
