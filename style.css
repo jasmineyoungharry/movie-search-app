@@ -66,3 +66,46 @@ body {
     background-color: #1d4ed8;
 }
 
+/* Movie Card */
+.movie-card {
+    display: flex;
+    gap: 20px;
+
+    background-color: #1f2937;
+
+    padding: 20px;
+    border-radius: 12px;
+
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Movie Poster */
+.movie-poster {
+    width: 250px;
+    border-radius: 10px;
+}
+
+/* Movie Info */
+.movie-info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Movie Title */
+.movie-title {
+    font-size: 2rem;
+}
+
+/* Movie Year & Rating */
+.movie-year,
+.movie-rating {
+    font-size: 1.1rem;
+    color: #d1d5db;
+}
+
+/* Movie Plot */
+.movie-plot {
+    line-height: 1.6;
+    color: #f3f4f6;
+}
