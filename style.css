@@ -121,3 +121,35 @@ body {
 
     font-size: 1.1rem;
 }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+
+    /* Search Section */
+    .search-section {
+        flex-direction: column;
+    }
+
+    /* Movie Card */
+    .movie-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    /* Poster */
+    .movie-poster {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    /* Movie Info */
+    .movie-info {
+        align-items: center;
+    }
+
+    /* Title */
+    .app-title {
+        font-size: 2rem;
+    }
+}
