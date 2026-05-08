@@ -94,4 +94,4 @@ Potential future upgrades:
 1. Clone the repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/movie-search-app.git
+git clone https://github.com/jasmineyoungharry/movie-search-app
