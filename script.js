@@ -2,6 +2,7 @@
 const searchBtn = document.getElementById("search-btn");
 const movieInput = document.getElementById("movie-input");
 const movieContainer = document.getElementById("movie-container");
+const loadingSpinner = document.getElementById("loading-spinner");
 
 // OMDb API Key
 const apiKey = "5349e157";
@@ -10,6 +11,17 @@ let currentMovies = [];
 // Search Button Event
 searchBtn.addEventListener("click", () => {
     getMovieData();
+});
+
+// Press Enter to Search
+movieInput.addEventListener("keydown", (event) => {
+
+    if (event.key === "Enter") {
+
+        getMovieData();
+
+    }
+
 });
 
 // Fetch Movie Data
@@ -37,8 +49,17 @@ async function getMovieData() {
         // Fetch data
         const response = await fetch(url);
 
+        // Show loading spinner
+        loadingSpinner.classList.remove("hidden");
+
+        // Clear old content
+        movieContainer.innerHTML = "";
+
         // Convert to JSON
         const data = await response.json();
+
+        // Hide loading spinner
+        loadingSpinner.classList.add("hidden");
 
         // Display movie on page
         if (data.Response === "False") {
@@ -57,14 +78,17 @@ currentMovies = data.Search;
 displayMovies(currentMovies);
     } catch (error) {
 
-        movieContainer.innerHTML = `
-    <p class="error-message">
-        Something went wrong. Please try again.
-    </p>
-`;
+    loadingSpinner.classList.add("hidden");
 
-console.log(error);
-    }
+    movieContainer.innerHTML = `
+        <p class="error-message">
+            Something went wrong. Please try again.
+        </p>
+    `;
+
+    console.log(error);
+
+}
 }
 
 // Display Multiple Movies
