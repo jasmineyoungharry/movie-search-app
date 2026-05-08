@@ -148,6 +148,19 @@ body {
     color: #f3f4f6;
 }
 
+/* Detailed View Mobile */
+.movie-details {
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+}
+
+.details-poster {
+    width: 100%;
+    max-width: 300px;
+}
+
 /* Error Message */
 .error-message {
     text-align: center;
@@ -205,4 +218,40 @@ body {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* Detailed Movie View */
+.movie-details {
+    display: flex;
+    gap: 30px;
+
+    background-color: rgba(31, 41, 55, 0.95);
+
+    padding: 30px;
+    border-radius: 20px;
+
+    animation: fadeIn 0.4s ease;
+}
+
+/* Detailed Poster */
+.details-poster {
+    width: 300px;
+    border-radius: 16px;
+}
+
+/* Detailed Info */
+.details-info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Detailed Title */
+.details-title {
+    font-size: 2.5rem;
+}
+
+/* Plot */
+.details-plot {
+    line-height: 1.8;
 }

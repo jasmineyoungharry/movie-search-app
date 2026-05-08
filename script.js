@@ -76,7 +76,7 @@ function displayMovies(movies) {
 
         movieContainer.innerHTML += `
 
-            <div class="movie-card">
+            <div class="movie-card" onclick="getMovieDetails('${movie.imdbID}')">
 
                 <img
                     src="${movie.Poster}"
@@ -100,4 +100,74 @@ function displayMovies(movies) {
 
         `;
     });
+}
+
+// Fetch Full Movie Details
+async function getMovieDetails(imdbID) {
+
+    // API URL using IMDb ID
+    const url = `https://www.omdbapi.com/?apikey=${apiKey}&i=${imdbID}`;
+
+    try {
+
+        // Fetch full movie details
+        const response = await fetch(url);
+
+        // Convert to JSON
+        const data = await response.json();
+
+        // Display detailed movie view
+        displayMovieDetails(data);
+
+    } catch (error) {
+
+        console.log(error);
+
+    }
+}
+
+// Display Full Movie Details
+function displayMovieDetails(movie) {
+
+    movieContainer.innerHTML = `
+
+        <div class="movie-details">
+
+            <img
+                src="${movie.Poster}"
+                alt="${movie.Title}"
+                class="details-poster"
+            />
+
+            <div class="details-info">
+
+                <h2 class="details-title">
+                    ${movie.Title}
+                </h2>
+
+                <p>
+                    <strong>Year:</strong> ${movie.Year}
+                </p>
+
+                <p>
+                    <strong>Genre:</strong> ${movie.Genre}
+                </p>
+
+                <p>
+                    <strong>IMDb Rating:</strong> ${movie.imdbRating}
+                </p>
+
+                <p>
+                    <strong>Actors:</strong> ${movie.Actors}
+                </p>
+
+                <p class="details-plot">
+                    ${movie.Plot}
+                </p>
+
+            </div>
+
+        </div>
+
+    `;
 }
