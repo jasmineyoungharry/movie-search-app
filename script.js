@@ -29,7 +29,7 @@ async function getMovieData() {
 }
 
     // API URL
-    const url = `https://www.omdbapi.com/?apikey=${apiKey}&t=${movieName}`;
+    const url = `https://www.omdbapi.com/?apikey=${apiKey}&s=${movieName}`;
 
     try {
 
@@ -51,7 +51,7 @@ async function getMovieData() {
     return;
 }
 
-displayMovie(data);
+displayMovies(data.Search);
 
     } catch (error) {
 
@@ -65,40 +65,39 @@ console.log(error);
     }
 }
 
-// Display Movie Function
-function displayMovie(movie) {
+// Display Multiple Movies
+function displayMovies(movies) {
 
-    movieContainer.innerHTML = `
-    
-        <div class="movie-card">
+    // Clear previous results
+    movieContainer.innerHTML = "";
 
-            <img
-                src="${movie.Poster}"
-                alt="${movie.Title}"
-                class="movie-poster"
-            />
+    // Loop through movie array
+    movies.forEach((movie) => {
 
-            <div class="movie-info">
+        movieContainer.innerHTML += `
 
-                <h2 class="movie-title">
-                    ${movie.Title}
-                </h2>
+            <div class="movie-card">
 
-                <p class="movie-year">
-                    Year: ${movie.Year}
-                </p>
+                <img
+                    src="${movie.Poster}"
+                    alt="${movie.Title}"
+                    class="movie-poster"
+                />
 
-                <p class="movie-rating">
-                    IMDb Rating: ${movie.imdbRating}
-                </p>
+                <div class="movie-info">
 
-                <p class="movie-plot">
-                    ${movie.Plot}
-                </p>
+                    <h2 class="movie-title">
+                        ${movie.Title}
+                    </h2>
+
+                    <p class="movie-year">
+                        Year: ${movie.Year}
+                    </p>
+
+                </div>
 
             </div>
 
-        </div>
-
-    `;
+        `;
+    });
 }
