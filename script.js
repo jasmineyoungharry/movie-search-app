@@ -3,10 +3,15 @@ const searchBtn = document.getElementById("search-btn");
 const movieInput = document.getElementById("movie-input");
 const movieContainer = document.getElementById("movie-container");
 const loadingSpinner = document.getElementById("loading-spinner");
+const favoritesBtn = document.getElementById("favorites-btn");
 
 // OMDb API Key
 const apiKey = "5349e157";
+
+// Store Current Search Results
 let currentMovies = [];
+
+// Store Favorites
 let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 
 // Search Button Event
@@ -25,80 +30,92 @@ movieInput.addEventListener("keydown", (event) => {
 
 });
 
+// Open Favorites
+favoritesBtn.addEventListener("click", () => {
+
+    displayFavorites();
+
+});
+
 // Fetch Movie Data
 async function getMovieData() {
 
-    // Get movie name from input
+    // Get movie name
     const movieName = movieInput.value.trim();
 
+    // Empty Validation
     if (movieName === "") {
 
-    movieContainer.innerHTML = `
-        <p class="error-message">
-            Please enter a movie name.
-        </p>
-    `;
+        movieContainer.innerHTML = `
+            <p class="error-message">
+                Please enter a movie name.
+            </p>
+        `;
 
-    return;
-}
+        return;
+    }
 
     // API URL
     const url = `https://www.omdbapi.com/?apikey=${apiKey}&s=${movieName}`;
 
     try {
 
-        // Fetch data
-        const response = await fetch(url);
-
-        // Show loading spinner
+        // Show Spinner
         loadingSpinner.classList.remove("hidden");
 
         // Clear old content
         movieContainer.innerHTML = "";
 
+        // Fetch Data
+        const response = await fetch(url);
+
         // Convert to JSON
         const data = await response.json();
 
-        // Hide loading spinner
+        // Hide Spinner
         loadingSpinner.classList.add("hidden");
 
-        // Display movie on page
+        // Handle Invalid Movies
         if (data.Response === "False") {
 
-    movieContainer.innerHTML = `
-        <p class="error-message">
-            Movie not found.
-        </p>
-    `;
+            movieContainer.innerHTML = `
+                <p class="error-message">
+                    Movie not found.
+                </p>
+            `;
 
-    return;
-}
+            return;
+        }
 
-currentMovies = data.Search;
+        // Save Current Movies
+        currentMovies = data.Search;
 
-displayMovies(currentMovies);
+        // Display Movies
+        displayMovies(currentMovies);
+
     } catch (error) {
 
-    loadingSpinner.classList.add("hidden");
+        // Hide Spinner
+        loadingSpinner.classList.add("hidden");
 
-    movieContainer.innerHTML = `
-        <p class="error-message">
-            Something went wrong. Please try again.
-        </p>
-    `;
+        movieContainer.innerHTML = `
+            <p class="error-message">
+                Something went wrong. Please try again.
+            </p>
+        `;
 
-    console.log(error);
+        console.log(error);
 
-}
+    }
 }
 
 // Display Multiple Movies
 function displayMovies(movies) {
 
-    // Clear previous results
+    // Clear container
     movieContainer.innerHTML = "";
 
-    // Loop through movie array
+    // Loop through movies
     movies.forEach((movie) => {
 
         movieContainer.innerHTML += `
@@ -127,23 +144,24 @@ function displayMovies(movies) {
 
         `;
     });
+
 }
 
 // Fetch Full Movie Details
 async function getMovieDetails(imdbID) {
 
-    // API URL using IMDb ID
+    // API URL
     const url = `https://www.omdbapi.com/?apikey=${apiKey}&i=${imdbID}`;
 
     try {
 
-        // Fetch full movie details
+        // Fetch Data
         const response = await fetch(url);
 
         // Convert to JSON
         const data = await response.json();
 
-        // Display detailed movie view
+        // Display Movie Details
         displayMovieDetails(data);
 
     } catch (error) {
@@ -196,7 +214,10 @@ function displayMovieDetails(movie) {
                     ${movie.Plot}
                 </p>
 
-                <button class="favorite-btn" onclick='addToFavorites(${JSON.stringify(movie)})'>
+                <button
+                    class="favorite-btn"
+                    onclick='addToFavorites(${JSON.stringify(movie)})'
+                >
                      Add to Favorites
                 </button>
 
@@ -207,7 +228,7 @@ function displayMovieDetails(movie) {
     `;
 }
 
-// Go Back to Search Results
+// Go Back to Results
 function goBack() {
 
     displayMovies(currentMovies);
@@ -239,4 +260,81 @@ function addToFavorites(movie) {
     );
 
     alert("Movie added to favorites!");
+
+}
+
+// Display Favorites
+function displayFavorites() {
+
+    // Check if empty
+    if (favorites.length === 0) {
+
+        movieContainer.innerHTML = `
+            <p class="error-message">
+                No favorite movies yet.
+            </p>
+        `;
+
+        return;
+    }
+
+    // Clear container
+    movieContainer.innerHTML = "";
+
+    // Loop through favorites
+    favorites.forEach((movie) => {
+
+        movieContainer.innerHTML += `
+
+            <div class="movie-card">
+
+                <img
+                    src="${movie.Poster}"
+                    alt="${movie.Title}"
+                    class="movie-poster"
+                />
+
+                <div class="movie-info">
+
+                    <h2 class="movie-title">
+                        ${movie.Title}
+                    </h2>
+
+                    <p class="movie-year">
+                        Year: ${movie.Year}
+                    </p>
+
+                    <button
+                        class="remove-btn"
+                        onclick="removeFavorite('${movie.imdbID}')"
+                    >
+                        Remove
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
+    });
+
+}
+
+// Remove Favorite
+function removeFavorite(imdbID) {
+
+    // Remove from array
+    favorites = favorites.filter(
+        (movie) => movie.imdbID !== imdbID
+    );
+
+    // Update localStorage
+    localStorage.setItem(
+        "favorites",
+        JSON.stringify(favorites)
+    );
+
+    // Refresh favorites
+    displayFavorites();
+
 }
